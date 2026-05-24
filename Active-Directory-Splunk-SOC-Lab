@@ -16,7 +16,7 @@ The objective was to centralize Windows Security and Sysmon logs, perform securi
 ---
 
 ## Architecture
-
+![SOC Lab Architecture](soc-lab-architecture.png)
 
 
 ---
