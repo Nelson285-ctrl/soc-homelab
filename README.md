@@ -58,35 +58,78 @@ The dashboard includes:
 - Events by Host
 - Top Security Event IDs
 
+SOC Monitoring Dashboard
+![SOC Dashboard](screenshots/soc-dashboard.png)
+
+Investigation Panels
+![Investigation Panels](screenshots/investigation-panels.png)
+
 ---
 
 ## Example SPL Queries
 
-### Failed Logons
+### Failed Logons (Event ID 4625)
+
+Purpose: Identify failed authentication attempts and potential brute-force activity.
 
 ```spl
 index=main EventCode=4625
+|stats count by Account_Name Failure_Reason
+|sort-count
 ```
 
-### Successful Logons
+### Successful Logons (Event ID 4624)
+
+Purpose: Monitor successful authentication activity to establish user behavior baselines and identify potentially suspicious account access.
 
 ```spl
 index=main EventCode=4624
+| stats count by host
 ```
+### Account Lockouts (Event ID 4740)
 
+Purpose: Detect account lockouts that may indicate password spraying, brute-force attacks, or repeated authentication failures.
+
+```spl
+index=main EventCode=4740
+| stats count by TargetUserName
+```
 ### Top Failed Accounts
+
+Purpose: Identify accounts generating the highest number of failed authentication attempts to support investigation of credential attacks and misconfigured systems.
 
 ```spl
 index=main EventCode=4625
 | stats count by Account_Name
-| sort -count
+| sort - count
 ```
 
 ### Events by Host
 
+Purpose: Analyze event distribution across hosts to identify systems generating unusual volumes of security activity.
+
 ```spl
 index=main
 | stats count by host
+```
+### Top Security Event IDs
+
+Purpose: Identify the most frequently occurring security events to understand authentication trends and prioritize monitoring efforts.
+
+```spl
+index=main sourcetype=WinEventLog:Security
+| stats count by EventCode
+| sort - count
+```
+### Multiple Failed Logons Alert
+
+Purpose: Detect potential brute-force or password-spraying activity by identifying accounts that generate multiple failed logon attempts within a short period.
+
+```spl
+index=main EventCode=4625
+| bucket span=5m _time
+| stats count by _time Account_Name host
+| where count >= 5
 ```
 
 ---
