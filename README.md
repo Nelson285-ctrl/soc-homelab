@@ -154,12 +154,27 @@ index=main EventCode=4625
 - Universal Forwarders simplify centralized log collection.
 - Windows Security Event IDs can be leveraged to create practical SOC detections.
 - Dashboards provide visibility into authentication activity across multiple hosts.
-
+- Detection Engineering
+- - Threat Hunting
 ---
 
 ## Future Improvements
 
-- Create account lockout (4740) detections
-- Add Sysmon process creation detections
-- Build Splunk alerts and automated notifications
+## Future Improvements
+
+- Detect encoded PowerShell commands
+- Monitor PowerShell network connections (Sysmon Event ID 3)
+- Create additional threat hunting use cases
+- Implement email or webhook alert notifications
 - Expand monitoring to additional endpoints
+- Develop custom detection engineering content
+
+## Detection Use Cases
+
+The SOC lab currently includes the following detections:
+
+| Detection | Data Source | Event ID | MITRE ATT&CK |
+|------------|------------|-----------|--------------|
+| Multiple Failed Logons | Windows Security Logs | 4625 | T1110 - Brute Force |
+| Account Lockout Detected | Windows Security Logs | 4740 | T1110 - Brute Force |
+| PowerShell Execution Detected | Sysmon | 1 | T1059.001 - PowerShell |
