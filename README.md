@@ -158,7 +158,7 @@ index=main EventCode=4625
 - - Threat Hunting
 ---
 
-## Future Improvements
+
 
 ## Future Improvements
 
